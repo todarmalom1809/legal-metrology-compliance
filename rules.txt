@@ -1,0 +1,304 @@
+{
+  "version": "SIH26034-MVP-1.0",
+  "source_framework": "Legal Metrology Packaged Commodities Rules 2011 - provided project matrix",
+  "rules": [
+    {
+      "id": "R-01",
+      "name": "Label declarations",
+      "severity": "HIGH",
+      "check": "Verify that the package contains a visible label with required declarations.",
+      "automation": "FLAG_FOR_REVIEW"
+    },
+    {
+      "id": "R-02",
+      "name": "Manufacturer/Packer/Importer details",
+      "severity": "HIGH",
+      "check": "Verify presence of manufacturer, packer or importer name and complete address with PIN code.",
+      "required": [
+        "name",
+        "address",
+        "pin_code"
+      ],
+      "exceptions": [
+        "Food articles may follow applicable food-law requirements.",
+        "Packages of 5 cubic centimetres or less may have an identifying mark."
+      ],
+      "automation": "FLAG_FOR_REVIEW"
+    },
+    {
+      "id": "R-03",
+      "name": "Generic product name",
+      "severity": "MEDIUM",
+      "check": "Verify that the common or generic name of the commodity is visible.",
+      "automation": "FLAG_FOR_REVIEW"
+    },
+    {
+      "id": "R-04",
+      "name": "Net quantity",
+      "severity": "CRITICAL",
+      "check": "Verify that a numeric net quantity and an appropriate unit are present.",
+      "allowed_units": [
+        "g",
+        "kg",
+        "mg",
+        "ml",
+        "l",
+        "L",
+        "cm",
+        "m",
+        "sq cm",
+        "U",
+        "N"
+      ],
+      "cannot_verify": "Actual physical weight or volume.",
+      "automation": "FLAG_FOR_REVIEW"
+    },
+    {
+      "id": "R-05",
+      "name": "Manufacturing/Packing/Import date",
+      "severity": "MEDIUM",
+      "check": "Verify presence of a month and year for manufacture, packing or import where this rule applies.",
+      "date_patterns": [
+        "MM/YYYY",
+        "MM-YYYY",
+        "MM.YYYY",
+        "MMM YYYY"
+      ],
+      "exceptions": [
+        "Food articles",
+        "Seeds covered by Seeds Act",
+        "Cosmetics covered by Drugs and Cosmetics Rules",
+        "Bidis",
+        "Incense sticks",
+        "LPG 14.2kg/5kg"
+      ],
+      "automation": "AUTOMATIC"
+    },
+    {
+      "id": "R-06",
+      "name": "Maximum Retail Price",
+      "severity": "CRITICAL",
+      "check": "Verify that MRP is declared with a numeric price and indicates inclusion of all taxes.",
+      "mrp_patterns": [
+        "MRP Rs",
+        "MRP ₹",
+        "MRP INR",
+        "Max. retail price Rs",
+        "Max retail price Rs"
+      ],
+      "tax_words": [
+        "incl. of all taxes",
+        "inclusive of all taxes",
+        "incl of all taxes"
+      ],
+      "exceptions": [
+        "Alcoholic beverages - State Excise requirements",
+        "Bidis",
+        "Administered-price LPG"
+      ],
+      "automation": "AUTOMATIC"
+    },
+    {
+      "id": "R-07",
+      "name": "Consumer care details",
+      "severity": "HIGH",
+      "check": "Verify presence of consumer complaint contact information.",
+      "required": [
+        "phone",
+        "email",
+        "address"
+      ],
+      "keywords": [
+        "Consumer Care",
+        "Consumer Care Cell",
+        "Feedback",
+        "Contact"
+      ],
+      "automation": "AUTOMATIC"
+    },
+    {
+      "id": "R-08",
+      "name": "Sticker alteration",
+      "severity": "MEDIUM",
+      "check": "Stickers must not be used to alter mandatory declarations, except to reduce MRP without covering the original MRP.",
+      "automation": "MANUAL_REVIEW",
+      "cannot_verify": "Whether a sticker covers an original declaration or whether it is legitimately reducing MRP."
+    },
+    {
+      "id": "R-09",
+      "name": "Numeral height",
+      "severity": "LOW",
+      "check": "Numerals must satisfy applicable minimum physical height requirements.",
+      "automation": "MANUAL_REVIEW",
+      "cannot_verify": "Exact millimetre height from an ordinary uncalibrated photograph."
+    },
+    {
+      "id": "R-10",
+      "name": "Prominence and contrast",
+      "severity": "MEDIUM",
+      "check": "Mandatory declarations should be clearly readable, prominent and sufficiently contrasted.",
+      "exceptions": [
+        "Blown or moulded text on glass/plastic may not require normal contrast."
+      ],
+      "automation": "FLAG_FOR_REVIEW"
+    },
+    {
+      "id": "R-11",
+      "name": "Language",
+      "severity": "LOW",
+      "check": "Mandatory declarations should be available in Hindi (Devanagari) or English.",
+      "allowed_languages": [
+        "English",
+        "Hindi"
+      ],
+      "automation": "AUTOMATIC"
+    },
+    {
+      "id": "R-12",
+      "name": "Misleading quantity words",
+      "severity": "MEDIUM",
+      "check": "Flag prohibited qualifying words when they modify the declared quantity.",
+      "prohibited_words": [
+        "minimum",
+        "not less than",
+        "average",
+        "about",
+        "approximately"
+      ],
+      "context_required": true,
+      "automation": "AUTOMATIC"
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "E-01",
+      "rule": "R-04",
+      "condition": "Package quantity is greater than 25 kg or 25 L.",
+      "action": "Generally exempt applicable packaged-commodity checks.",
+      "special_case": "Cement and fertilizer up to 50 kg remain subject to the relevant requirements."
+    },
+    {
+      "id": "E-02",
+      "rule": "R-02",
+      "condition": "Package is for institutional or industrial consumers.",
+      "action": "Do not automatically flag missing retail declarations.",
+      "requires_manual_input": true
+    },
+    {
+      "id": "E-03",
+      "rule": "R-05",
+      "condition": "Product is food.",
+      "action": "Do not automatically apply the metrology manufacturing-date check; route date verification to applicable food-law requirements."
+    },
+    {
+      "id": "E-04",
+      "rule": "R-06",
+      "condition": "Product is alcoholic beverage.",
+      "action": "Flag for review under applicable State Excise requirements."
+    },
+    {
+      "id": "E-05",
+      "rule": "R-26",
+      "condition": "Package quantity is 10 g or less or 10 ml or less.",
+      "action": "Exempt most applicable declarations, while retaining applicable MRP/quantity checks."
+    },
+    {
+      "id": "E-06",
+      "rule": "R-08",
+      "condition": "Sticker is used only to reduce MRP and does not cover the original MRP.",
+      "action": "Potentially allowed; require manual verification."
+    },
+    {
+      "id": "E-07",
+      "rule": "R-12",
+      "condition": "Product is a Schedule 3 category such as toilet soap.",
+      "action": "Allow the qualifying phrase 'when packed' where applicable."
+    },
+    {
+      "id": "E-08",
+      "rule": "R-06",
+      "condition": "Returnable soft-drink bottle.",
+      "action": "MRP may appear on the crown cap; require cap image or manual verification."
+    }
+  ],
+  "categories": {
+    "baby_food": {
+      "name": "Baby food",
+      "example": "Infant Formula",
+      "quantity_rule": "Standard prescribed pack sizes",
+      "pack_sizes": [
+        "100g",
+        "200g",
+        "300g",
+        "1kg"
+      ]
+    },
+    "biscuits": {
+      "name": "Biscuits",
+      "example": "Glucose Biscuits",
+      "quantity_rule": "Standard pack sizes",
+      "pack_sizes": [
+        "25g",
+        "50g",
+        "75g"
+      ],
+      "maximum": "1kg"
+    },
+    "bread": {
+      "name": "Bread",
+      "example": "Whole Wheat Bread",
+      "quantity_rule": "100g and multiples of 100g",
+      "exception": "Bun is excluded."
+    },
+    "aerated_soft_drinks": {
+      "name": "Aerated soft drinks",
+      "example": "Cola Bottle",
+      "special_rule": "MRP may be on bottle or crown cap."
+    },
+    "cement": {
+      "name": "Cement in bags",
+      "example": "Portland Cement",
+      "quantity_rule": "Special cement quantity requirements apply up to 50kg."
+    },
+    "toilet_soap": {
+      "name": "Soaps (Toilet)",
+      "example": "Bathing Bar",
+      "special_rule": "Quantity may use 'when packed' where applicable."
+    },
+    "liquid_chemicals": {
+      "name": "Liquid chemicals",
+      "example": "Cleaning Acid",
+      "quantity_rule": "Quantity may be declared by weight or volume."
+    },
+    "agricultural_produce": {
+      "name": "Agricultural produce",
+      "example": "Rice bags",
+      "special_rule": "Packages above 50kg may be exempt under the applicable rule."
+    }
+  },
+  "mvp": {
+    "must_have": [
+      "OCR/text extraction",
+      "MRP validation",
+      "Net quantity and unit parsing",
+      "Rule engine",
+      "PASS/FLAG/REVIEW result"
+    ],
+    "should_have": [
+      "Prohibited quantity-word detection",
+      "Product category classification",
+      "Consumer care detection",
+      "Language detection",
+      "Exception handling"
+    ],
+    "do_not_claim": [
+      "100% legal compliance guarantee",
+      "Replacement of human quality control",
+      "Physical weight verification",
+      "Exact physical text-height verification",
+      "Reliable sticker detection",
+      "Verification that a company address actually exists",
+      "Detection of deceptive packaging based on actual physical contents"
+    ]
+  }
+}
